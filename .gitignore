@@ -1,0 +1,11 @@
+# editors
+.idea/
+*.iml
+
+# truffle
+node_modules/
+build/
+
+# project
+cryptozombies/
+secret.js
