@@ -1,9 +1,10 @@
 {
-  "name": "oxmail-core",
+  "name": "publicmail",
   "version": "1.0.0",
-  "description": "",
+  "description": "Mail and messaging on the blockchain.",
   "main": "secret.example.js",
   "directories": {
+    "doc": "docs",
     "test": "test"
   },
   "scripts": {
@@ -11,13 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oxmail/oxmail-core.git"
+    "url": "git+https://github.com/atik-lab/publicmail.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oxmail/oxmail-core/issues"
+    "url": "https://github.com/atik-lab/publicmail/issues"
   },
-  "homepage": "https://github.com/oxmail/oxmail-core#readme"
+  "homepage": "https://github.com/atik-lab/publicmail#readme",
+  "dependencies": {
+    "zeppelin-solidity": "^1.7.0"
+  },
+  "devDependencies": {}
 }

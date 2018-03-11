@@ -1,5 +1,5 @@
-var Oxmail = artifacts.require("./Oxmail.sol");
+var Publicmail = artifacts.require("./Publicmail.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Oxmail);
+  deployer.deploy(Publicmail);
 };
