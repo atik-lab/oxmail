@@ -1,43 +1,5 @@
-let contractAddr = "0x46f4e59ce925b12e459c31a3642c9ff95564dd84";
+let contractAddr = "0xf9495ab9d6ee1b0a1fc77bbb61a6611b4a88e999";
 let contractABI = [
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "mailToAddress",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "mailFromAddress",
-        "outputs": [
-            {
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
     {
         "constant": true,
         "inputs": [
@@ -64,7 +26,7 @@ let contractABI = [
     {
         "constant": true,
         "inputs": [],
-        "name": "totalMails",
+        "name": "mailCount",
         "outputs": [
             {
                 "name": "",
@@ -113,6 +75,25 @@ let contractABI = [
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "getMailFromAddress",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
     }
 ];

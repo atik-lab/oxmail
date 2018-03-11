@@ -10,7 +10,7 @@ class Publicmail
             this.account = this.w3.eth.accounts[0];
 
             this.startMailWatcher();
-            this.getMailFrom();
+            this.getMailFromAccount();
         } else {
             console.log("No web3")
         }
@@ -32,9 +32,14 @@ class Publicmail
         });
     }
 
-    getMailFrom() {
-        this.contract.mailFromAddress(1, function (error, mailFromAddress) {
-            console.log("x" + mailFromAddress);
+    getMailFromAccount() {
+        let self = this;
+        this.contract.getMailFromAddress(this.account, function (error, mailFromAddress) {
+            for (let i = 0; i < mailFromAddress.length; i++) {
+                self.contract.mail(mailFromAddress[i], function (error, mail) {
+                    console.log(mail);
+                });
+            }
         });
     }
 
@@ -56,5 +61,5 @@ class Publicmail
 // initialize when page is loaded
 let publicmail;
 window.addEventListener('load', function() {
-    oxmail = new Publicmail();
+    publicmail = new Publicmail();
 });
