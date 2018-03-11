@@ -29,7 +29,7 @@ contract Publicmail
     function _createMail(string _body) private returns(uint) {
         // require(_body != '');
         Mail memory _mail = Mail(_body, msg.sender);
-        uint _id = mail.push(_mail);
+        uint _id = mail.push(_mail) - 1;
         mailFromAddress[_id] = msg.sender;
         mailFromAddressCount[msg.sender]++;
         mailCount++;

@@ -5,9 +5,14 @@ let app = angular.module("PublicMail", []);
 
 app.controller("mainControler", function($scope) {
     // the model of publicmail, this is an object with all the model
+    $scope.w3 = null;
+    $scope.contract = null;
+    $scope.account = "0x000...";
     $scope.openmail  = {
-        "account": "0x",
-        "mailcount": 0
+        account: "0x",
+        mailCount: 0,
+        inbox: [],
+        sent: []
     };
 
     // init
@@ -15,17 +20,19 @@ app.controller("mainControler", function($scope) {
         if (typeof web3 !== 'undefined') {
             $scope.w3 = new Web3(web3.currentProvider);
             $scope.contract = $scope.w3.eth.contract(contractABI).at(contractAddr);
-            $scope.openmail.account = $scope.w3.eth.accounts[0];
+            $scope.account = $scope.w3.eth.accounts[0];
 
             $scope.mailCount();
-            //this.startMailWatcher();
-            //this.getMailFromAccount();
+            $scope.startNewMailWatcher();
+            $scope.mailFromAccount();
+
+            console.log($scope.openmail);
         } else {
             console.log("No web3")
         }
     };
 
-    // sendMail
+    // calls sendMail contract with the form values
     $scope.sendMail = function() {
         let body = document.getElementById("send-mail-body").value;
         let to = document.getElementById("send-mail-to").value;
@@ -45,51 +52,50 @@ app.controller("mainControler", function($scope) {
     // updates mailCount by executing the contract
     $scope.mailCount = function () {
         $scope.contract.mailCount(function (error, mailCount) {
-            $scope.openmail.mailcount = mailCount;
+            $scope.$applyAsync(function () {
+                $scope.openmail.mailCount = mailCount;
+            });
         });
+    };
+
+    // show mail from current account
+    $scope.mailFromAccount = function () {
+        $scope.contract.getMailFromAddress($scope.account, function (error, mailFromAddress) {
+            console.log(mailFromAddress);
+            let mailFromAddressLength = mailFromAddress.length;
+            for (let i = 0; i < mailFromAddressLength; i++) {
+                $scope.contract.mail(mailFromAddress[i], function (error, mail) {
+                    $scope.$applyAsync(function () {
+                        console.log(mail);
+                        $scope.openmail.sent.push({
+                            mailId: mailFromAddress[i],
+                            body: mail[0],
+                            from: mail[1]
+                        });
+                    });
+                });
+            }
+        });
+    };
+
+    // every time that a new mail is created, we add it to mails
+    $scope.startNewMailWatcher = function () {
+        let NewMail = $scope.contract.NewMail({}, {
+            fromBlock: 'latest',
+            toBlock: 'latest'
+        });
+        NewMail.watch(function(error, mail) {
+            $scope.$applyAsync(function () {
+                // mail contains mailId, from, to
+                $scope.openmail.inbox.push({
+                    mailId: mail.args.mailId,
+                    from: mail.args.from,
+                    to: mail.args.to
+                });
+            });
+        })
     };
 
     // initialize
     $scope.init();
 });
-
-class Publicmail
-{
-    getMainControllerScope() {
-        return angular.element(document.getElementById('main-controller')).scope();
-    }
-
-
-    getMailFromAccount() {
-        let self = this;
-        this.contract.getMailFromAddress(this.account, function (error, mailFromAddress) {
-            for (let i = 0; i < mailFromAddress.length; i++) {
-                self.contract.mail(mailFromAddress[i], function (error, mail) {
-                    console.log(mail);
-                });
-            }
-        });
-    }
-
-    startMailWatcher() {
-        let NewMail = this.contract.NewMail({}, {
-            fromBlock: 'latest',
-            toBlock: 'latest'
-        });
-        NewMail.watch(function(error, mail) {
-            // mail contains mailId, from, to
-            let mailId = mail.args.mailId;
-            let from = mail.args.from;
-            let to = mail.args.to;
-            console.log("New Mail (" + mailId + "): " + from + " -> " + to);
-        })
-    }
-}
-
-// initialize when page is loaded
-/*
-let publicmail;
-window.addEventListener('load', function() {
-    publicmail = new Publicmail();
-});
-*/

@@ -9,14 +9,31 @@
 </head>
 <body ng-app="PublicMail">
     <div class="wrapper" id="main-controller" ng-controller="mainControler">
-        <div id="mail-count">{{ openmail.mailcount }} {{ openmail.account }}</div>
-        <div id="send-mail">
-            <input id="send-mail-to" type="text" title="Destination address" />
-            <textarea id="send-mail-body" title="Content of the mail">Message</textarea>
-            <button id="send-mail-button" ng-click="sendMail()">Send</button>
+        <div id="header">
+            <div id="mail-count">MailCount: {{ openmail.mailCount }}</div>
+            <div id="my-account">MyAccount: {{ account }}</div>
         </div>
-        <div id="sent-mails"></div>
-        <div id="mail-received"></div>
+        <div id="left-column">
+            <div id="send-mail">
+                <input id="send-mail-to" type="text" title="Destination address" />
+                <textarea id="send-mail-body" title="Content of the mail">Message</textarea>
+                <button id="send-mail-button" ng-click="sendMail()">Send</button>
+            </div>
+            <div id="mail-sent">
+                <div class="mail" ng-repeat="m in openmail.sent | orderBy:'-mailId'">
+                    ID: {{ m.mailId }}<br/>
+                    From: {{ m.from }}<br/>
+                    Body: {{ m.body }}
+                </div>
+            </div>
+        </div>
+        <div id="mail-received">
+            <div class="mail" ng-repeat="m in openmail.inbox | orderBy:'-mailId'">
+                ID: {{ m.mailId }}<br/>
+                From: {{ m.from }}<br/>
+                To: {{ m.to }}
+            </div>
+        </div>
     </div>
 </body>
 </html>
