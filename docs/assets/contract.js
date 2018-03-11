@@ -1,4 +1,4 @@
-let contractAddr = "0xf9495ab9d6ee1b0a1fc77bbb61a6611b4a88e999";
+let contractAddr = "0x9f72bbec054a83698d07ebe0605a588b6b9d7898";
 let contractABI = [
     {
         "constant": true,

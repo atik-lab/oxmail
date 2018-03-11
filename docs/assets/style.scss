@@ -9,7 +9,16 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+#mail-count {
+  float: left;
+  width: 36%;
+  margin: 2%;
+  border: 1px solid #444;
+  padding: 10px;
+}
+
 #send-mail {
+  clear: left;
   float: left;
   width: 36%;
   margin: 2%;
@@ -35,13 +44,14 @@ body {
   }
 }
 
-#mails-sent {
+#sent-mail {
+  clear: left;
   float: left;
   width: 36%;
   margin: 2% 0 2% 2%;
 }
 
-#mails-received {
+#mail-received {
   float: right;
   width: 58%;
   margin-right: 2%;

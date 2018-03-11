@@ -3,15 +3,17 @@
     <title>PublicMail</title>
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script type="text/javascript" src="assets/contract.js"></script>
     <script type="text/javascript" src="assets/app.js"></script>
 </head>
-<body>
-    <div class="wrapper">
+<body ng-app="PublicMail">
+    <div class="wrapper" id="main-controller" ng-controller="mainControler">
+        <div id="mail-count">{{ openmail.mailcount }} {{ openmail.account }}</div>
         <div id="send-mail">
             <input id="send-mail-to" type="text" title="Destination address" />
             <textarea id="send-mail-body" title="Content of the mail">Message</textarea>
-            <button id="send-mail-button" onclick="publicmail.sendMail()">Send</button>
+            <button id="send-mail-button" ng-click="sendMail()">Send</button>
         </div>
         <div id="sent-mails"></div>
         <div id="mail-received"></div>
