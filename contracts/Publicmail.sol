@@ -21,7 +21,7 @@ contract Publicmail
     mapping(uint => address) mailFromAddress;
     mapping(address => uint) mailFromAddressCount;
 
-    event NewMail(uint mailId, address from, address to);
+    event NewMail(uint mailId, address from, address to, string body);
 
     /**
      * @dev creates a mail
@@ -43,7 +43,7 @@ contract Publicmail
         uint _id = _createMail(_body);
         mailToAddress[_id] = _to;
         mailToAddressCount[_to]++;
-        NewMail(_id, msg.sender, _to);
+        NewMail(_id, msg.sender, _to, _body);
     }
 
     /**
@@ -54,6 +54,21 @@ contract Publicmail
         uint n = 0;
         for (uint i = 0; i < mail.length; i++) {
             if (mailFromAddress[i] == _address) {
+                result[n] = i;
+                n++;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @dev get mail to address
+     */
+    function getMailToAddress(address _address) external view returns(uint[]) {
+        uint[] memory result = new uint[](mailToAddressCount[_address]);
+        uint n = 0;
+        for (uint i = 0; i < mail.length; i++) {
+            if (mailToAddress[i] == _address) {
                 result[n] = i;
                 n++;
             }

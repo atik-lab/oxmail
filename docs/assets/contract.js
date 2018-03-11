@@ -1,4 +1,4 @@
-let contractAddr = "0x5ebb8a6e776b7ef90a535da3e27096dd583430d8";
+let contractAddr = "0xe658a8ea0e81fe5df58f2bf63bfb5fc70a3fefd5";
 let contractABI = [
     {
         "constant": true,
@@ -54,6 +54,11 @@ let contractABI = [
                 "indexed": false,
                 "name": "to",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "body",
+                "type": "string"
             }
         ],
         "name": "NewMail",
@@ -86,6 +91,25 @@ let contractABI = [
             }
         ],
         "name": "getMailFromAddress",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "getMailToAddress",
         "outputs": [
             {
                 "name": "",

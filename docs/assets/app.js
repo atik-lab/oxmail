@@ -25,6 +25,7 @@ app.controller("mainControler", function($scope) {
             $scope.mailCount();
             $scope.startNewMailWatcher();
             $scope.mailFromAccount();
+            $scope.mailToAccount();
 
             console.log($scope.openmail);
         } else {
@@ -61,14 +62,31 @@ app.controller("mainControler", function($scope) {
     // show mail from current account
     $scope.mailFromAccount = function () {
         $scope.contract.getMailFromAddress($scope.account, function (error, mailFromAddress) {
-            console.log(mailFromAddress);
             let mailFromAddressLength = mailFromAddress.length;
             for (let i = 0; i < mailFromAddressLength; i++) {
                 $scope.contract.mail(mailFromAddress[i], function (error, mail) {
                     $scope.$applyAsync(function () {
-                        console.log(mail);
                         $scope.openmail.sent.push({
                             mailId: mailFromAddress[i],
+                            body: mail[0],
+                            from: mail[1]
+                        });
+                    });
+                });
+            }
+        });
+    };
+
+    // show inbox
+    $scope.mailToAccount = function () {
+        $scope.contract.getMailToAddress($scope.account, function (error, mailToAddress) {
+            console.log(mailToAddress);
+            let mailToAddressLength = mailToAddress.length;
+            for (let i = 0; i < mailToAddressLength; i++) {
+                $scope.contract.mail(mailToAddress[i], function (error, mail) {
+                    $scope.$applyAsync(function () {
+                        $scope.openmail.inbox.push({
+                            mailId: mailToAddress[i],
                             body: mail[0],
                             from: mail[1]
                         });
@@ -87,11 +105,22 @@ app.controller("mainControler", function($scope) {
         NewMail.watch(function(error, mail) {
             $scope.$applyAsync(function () {
                 // mail contains mailId, from, to
-                $scope.openmail.inbox.push({
-                    mailId: mail.args.mailId,
-                    from: mail.args.from,
-                    to: mail.args.to
-                });
+                if (mail.args.from == $scope.account) {
+                    $scope.openmail.sent.push({
+                        mailId: mail.args.mailId,
+                        from: mail.args.from,
+                        to: mail.args.to,
+                        body: mail.args._body
+                    });
+                }
+                if (mail.args.to == $scope.account) {
+                    $scope.openmail.inbox.push({
+                        mailId: mail.args.mailId,
+                        from: mail.args.from,
+                        to: mail.args.to,
+                        body: mail.args._body
+                    });
+                }
             });
         })
     };

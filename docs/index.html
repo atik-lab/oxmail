@@ -23,6 +23,7 @@
                 <div class="mail" ng-repeat="m in openmail.sent | orderBy:'-mailId'">
                     ID: {{ m.mailId }}<br/>
                     From: {{ m.from }}<br/>
+                    To: {{ m.to }}<br/>
                     Body: {{ m.body }}
                 </div>
             </div>
@@ -31,7 +32,8 @@
             <div class="mail" ng-repeat="m in openmail.inbox | orderBy:'-mailId'">
                 ID: {{ m.mailId }}<br/>
                 From: {{ m.from }}<br/>
-                To: {{ m.to }}
+                To: {{ m.to }}<br/>
+                Body: {{ m.body }}
             </div>
         </div>
     </div>
