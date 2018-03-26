@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="assets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script type="text/javascript" src="assets/blockies.min.js"></script>
     <script type="text/javascript" src="assets/contract.js"></script>
     <script type="text/javascript" src="assets/app.js"></script>
 </head>
@@ -11,7 +12,7 @@
     <div class="wrapper" id="main-controller" ng-controller="mainControler">
         <div id="header">
             <div id="mail-count">MailCount: {{ openmail.mailCount }}</div>
-            <div id="my-account">MyAccount: {{ account }}</div>
+            <div id="my-account">MyAccount: <img src="{{ accountIcon }}" class="account-icon" /> {{ account }}</div>
         </div>
         <div id="left-column">
             <div id="send-mail">
@@ -21,6 +22,7 @@
             </div>
             <div id="mail-sent">
                 <div class="mail" ng-repeat="m in openmail.sent | orderBy:'-mailId'">
+                    <img src="{{ m.accountIcon }}" class="account-icon" />
                     ID: {{ m.mailId }}<br/>
                     From: {{ m.from }}<br/>
                     To: {{ m.to }}<br/>
@@ -30,6 +32,7 @@
         </div>
         <div id="mail-received">
             <div class="mail" ng-repeat="m in openmail.inbox | orderBy:'-mailId'">
+                <img src="{{ m.accountIcon }}" class="account-icon" />
                 ID: {{ m.mailId }}<br/>
                 From: {{ m.from }}<br/>
                 To: {{ m.to }}<br/>

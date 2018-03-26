@@ -8,8 +8,8 @@ app.controller("mainControler", function($scope) {
     $scope.w3 = null;
     $scope.contract = null;
     $scope.account = "0x000...";
+    $scope.accountIcon = null;
     $scope.openmail  = {
-        account: "0x",
         mailCount: 0,
         inbox: [],
         sent: []
@@ -20,14 +20,17 @@ app.controller("mainControler", function($scope) {
         if (typeof web3 !== 'undefined') {
             $scope.w3 = new Web3(web3.currentProvider);
             $scope.contract = $scope.w3.eth.contract(contractABI).at(contractAddr);
+
+            // load account and account icon
             $scope.account = $scope.w3.eth.accounts[0];
+            $scope.accountIcon = $scope._accountIcon($scope.account);
 
             $scope.mailCount();
             $scope.startNewMailWatcher();
             $scope.mailFromAccount();
             $scope.mailToAccount();
 
-            console.log($scope.openmail);
+            console.log("Openmail initialized");
         } else {
             console.log("No web3")
         }
@@ -37,7 +40,7 @@ app.controller("mainControler", function($scope) {
     $scope.sendMail = function() {
         let body = document.getElementById("send-mail-body").value;
         let to = document.getElementById("send-mail-to").value;
-        this.contract.sendMail(body, to, {
+        $scope.contract.sendMail(body, to, {
             gas: 1000000,
             gasPrice: 10000000000,
             from: this.account,
@@ -69,7 +72,8 @@ app.controller("mainControler", function($scope) {
                         $scope.openmail.sent.push({
                             mailId: mailFromAddress[i],
                             body: mail[0],
-                            from: mail[1]
+                            from: mail[1],
+                            accountIcon: $scope._accountIcon(mail[1])
                         });
                     });
                 });
@@ -88,7 +92,8 @@ app.controller("mainControler", function($scope) {
                         $scope.openmail.inbox.push({
                             mailId: mailToAddress[i],
                             body: mail[0],
-                            from: mail[1]
+                            from: mail[1],
+                            accountIcon: $scope._accountIcon(mail[1])
                         });
                     });
                 });
@@ -109,6 +114,7 @@ app.controller("mainControler", function($scope) {
                     $scope.openmail.sent.push({
                         mailId: mail.args.mailId,
                         from: mail.args.from,
+                        accountIcon: $scope._accountIcon(mail.args.from),
                         to: mail.args.to,
                         body: mail.args._body
                     });
@@ -117,12 +123,20 @@ app.controller("mainControler", function($scope) {
                     $scope.openmail.inbox.push({
                         mailId: mail.args.mailId,
                         from: mail.args.from,
+                        accountIcon: $scope._accountIcon(mail.args.from),
                         to: mail.args.to,
                         body: mail.args._body
                     });
                 }
             });
         })
+    };
+
+    $scope._accountIcon = function (ethAddress) {
+        let icon = blockies.create({
+            seed: ethAddress
+        });
+        return icon.toDataURL("image/jpeg")
     };
 
     // initialize
